@@ -8,16 +8,21 @@ const {
   loginChannel,
   updateChannel,
   deleteChannel,
-  restoreChannel,
+  //   restoreChannel,
 } = require('../controllers/channels')
+
+const { getAllVideos } = require('../controllers/videos')
 
 // CHANNELS
 router.get('/channels', getChannels)
 router.get('/channel/:id', getSingleChannel)
 router.patch('/channel/:id', updateChannel)
 router.delete('/channel/:id', deleteChannel)
-router.post('/channel/:id', restoreChannel)
+// router.post('/channel/:id', restoreChannel)
 router.post('/register', addChannel)
 router.post('/login', loginChannel)
+
+// VIDEOS
+router.get('/videos', getAllVideos)
 
 module.exports = router

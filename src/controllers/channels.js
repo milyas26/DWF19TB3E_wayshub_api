@@ -1,13 +1,22 @@
 // Import model User
-const { Channel } = require('../../models')
+const { Channel, Video } = require('../../models')
 
 // GET ALL CHANNELS
 exports.getChannels = async (req, res) => {
   try {
     const channels = await Channel.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
+      include: [
+        {
+          model: Video,
+          as: 'videos',
+          attributes: {
+            exclude: ['channelId', 'updatedAt', 'ChannelId'],
+          },
+        },
+      ],
     })
 
     if (channels.length === 0) {
@@ -44,7 +53,7 @@ exports.getSingleChannel = async (req, res) => {
         id,
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     })
 
@@ -136,7 +145,7 @@ exports.updateChannel = async (req, res) => {
         id,
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     })
 
@@ -182,37 +191,37 @@ exports.deleteChannel = async (req, res) => {
 }
 
 // RESTORE CHANNEL
-exports.restoreChannel = async (req, res) => {
-  try {
-    const { id } = req.params
+// exports.restoreChannel = async (req, res) => {
+//   try {
+//     const { id } = req.params
 
-    await Channel.restore({
-      where: {
-        id,
-      },
-    })
+//     await Channel.restore({
+//       where: {
+//         id,
+//       },
+//     })
 
-    const channel = await Channel.findOne({
-      where: {
-        id,
-      },
-    })
+//     const channel = await Channel.findOne({
+//       where: {
+//         id,
+//       },
+//     })
 
-    res.send({
-      status: 'Success',
-      message: 'Channel successfully restored',
-      data: {
-        channel,
-      },
-    })
-  } catch (err) {
-    res.status(500).send({
-      error: {
-        message: 'Server error',
-      },
-    })
-  }
-}
+//     res.send({
+//       status: 'Success',
+//       message: 'Channel successfully restored',
+//       data: {
+//         channel,
+//       },
+//     })
+//   } catch (err) {
+//     res.status(500).send({
+//       error: {
+//         message: 'Server error',
+//       },
+//     })
+//   }
+// }
 
 // LOGIN CHANNEL
 exports.loginChannel = async (req, res) => {
