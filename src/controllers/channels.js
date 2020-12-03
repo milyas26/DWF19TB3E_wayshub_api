@@ -156,6 +156,31 @@ exports.updateChannel = async (req, res) => {
   }
 }
 
+// DELETE CHANNEL
+exports.deleteChannel = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    Channel.destroy({
+      where: {
+        id,
+      },
+    })
+
+    res.send({
+      status: 'Success',
+      message: 'Channel successfully deleted',
+      data: [],
+    })
+  } catch (err) {
+    res.status(500).send({
+      error: {
+        message: 'Server error',
+      },
+    })
+  }
+}
+
 // LOGIN CHANNEL
 exports.loginChannel = async (req, res) => {
   try {
