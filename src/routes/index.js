@@ -1,9 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
-const { login, register } = require('../controllers/users')
+const {
+  getChannels,
+  getSingleChannel,
+  addChannel,
+  loginChannel,
+} = require('../controllers/channels')
 
-router.post('/login', login)
-router.post('/register', register)
+// CHANNELS
+router.get('/channels', getChannels)
+router.get('/channel/:id', getSingleChannel)
+router.post('/register', addChannel)
+router.post('/login', loginChannel)
 
 module.exports = router
