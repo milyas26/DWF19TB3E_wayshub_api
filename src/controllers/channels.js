@@ -6,7 +6,7 @@ exports.getChannels = async (req, res) => {
   try {
     const channels = await Channel.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
       },
     })
 
@@ -44,7 +44,7 @@ exports.getSingleChannel = async (req, res) => {
         id,
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
       },
     })
 
@@ -125,7 +125,7 @@ exports.updateChannel = async (req, res) => {
       })
     }
 
-    const channel = await Channel.update(body, {
+    await Channel.update(body, {
       where: {
         id,
       },
@@ -136,7 +136,7 @@ exports.updateChannel = async (req, res) => {
         id,
       },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
       },
     })
 
@@ -161,7 +161,7 @@ exports.deleteChannel = async (req, res) => {
   try {
     const { id } = req.params
 
-    Channel.destroy({
+    await Channel.destroy({
       where: {
         id,
       },
@@ -171,6 +171,39 @@ exports.deleteChannel = async (req, res) => {
       status: 'Success',
       message: 'Channel successfully deleted',
       data: [],
+    })
+  } catch (err) {
+    res.status(500).send({
+      error: {
+        message: 'Server error',
+      },
+    })
+  }
+}
+
+// RESTORE CHANNEL
+exports.restoreChannel = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    await Channel.restore({
+      where: {
+        id,
+      },
+    })
+
+    const channel = await Channel.findOne({
+      where: {
+        id,
+      },
+    })
+
+    res.send({
+      status: 'Success',
+      message: 'Channel successfully restored',
+      data: {
+        channel,
+      },
     })
   } catch (err) {
     res.status(500).send({
