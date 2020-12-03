@@ -105,6 +105,57 @@ exports.addChannel = async (req, res) => {
   }
 }
 
+// UPDATE CHANNEL
+exports.updateChannel = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { body } = req
+
+    const channelId = await Channel.findOne({
+      where: {
+        id,
+      },
+    })
+
+    if (!channelId) {
+      return res.status(404).send({
+        status: 'Resource not found',
+        message: `Channel with id ${id} not found`,
+        data: [],
+      })
+    }
+
+    const channel = await Channel.update(body, {
+      where: {
+        id,
+      },
+    })
+
+    const channelAfterUpdate = await Channel.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+    })
+
+    res.send({
+      status: 'Success',
+      message: 'Channel successfully updated',
+      data: {
+        channelAfterUpdate,
+      },
+    })
+  } catch (err) {
+    res.status(500).send({
+      error: {
+        message: 'Server error',
+      },
+    })
+  }
+}
+
 // LOGIN CHANNEL
 exports.loginChannel = async (req, res) => {
   try {
