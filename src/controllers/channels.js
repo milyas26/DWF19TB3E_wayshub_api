@@ -112,15 +112,13 @@ exports.loginChannel = async (req, res) => {
     const channel = await Channel.findOne({
       where: {
         email,
-      },
-      attributes: {
-        includes: ['email', 'password'],
+        password,
       },
     })
 
     if (!channel) {
       return res.send({
-        message: `User with email ${email} not found!`,
+        message: `Invalid email or password!`,
       })
     }
 
