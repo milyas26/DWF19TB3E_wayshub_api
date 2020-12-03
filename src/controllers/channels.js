@@ -130,7 +130,7 @@ exports.loginChannel = async (req, res) => {
       data: {
         channel: {
           email: channel.email,
-          channel: channel.password,
+          password: channel.password,
         },
       },
     })
