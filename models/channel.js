@@ -15,6 +15,20 @@ module.exports = (sequelize, DataTypes) => {
       Channel.hasMany(models.Comment, {
         as: 'comments',
       })
+
+      Channel.belongsToMany(models.Channel, {
+        foreignKey: 'subscribeId',
+        otherKey: 'subscriberId',
+        as: 'subscriber',
+        through: 'subscribes',
+      })
+
+      Channel.belongsToMany(models.Channel, {
+        foreignKey: 'subscriberId',
+        otherKey: 'subscribeId',
+        as: 'subscribe',
+        through: 'subscribes',
+      })
     }
   }
   Channel.init(

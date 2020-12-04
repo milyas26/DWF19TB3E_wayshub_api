@@ -16,6 +16,13 @@ exports.getChannels = async (req, res) => {
             exclude: ['channelId', 'updatedAt', 'ChannelId'],
           },
         },
+        {
+          model: Channel,
+          as: 'subscriber',
+          attributes: {
+            exclude: ['channelId', 'updatedAt', 'ChannelId', 'createdAt'],
+          },
+        },
       ],
     })
 
