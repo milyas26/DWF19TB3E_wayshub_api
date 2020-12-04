@@ -35,6 +35,7 @@ exports.getChannels = async (req, res) => {
       },
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
@@ -73,6 +74,7 @@ exports.getSingleChannel = async (req, res) => {
       },
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
@@ -106,6 +108,7 @@ exports.addChannel = async (req, res) => {
       },
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
@@ -157,6 +160,7 @@ exports.updateChannel = async (req, res) => {
       },
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
@@ -182,6 +186,7 @@ exports.deleteChannel = async (req, res) => {
       data: [],
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
@@ -251,6 +256,7 @@ exports.loginChannel = async (req, res) => {
       },
     })
   } catch (err) {
+    console.log(err)
     res.status(500).send({
       error: {
         message: 'Server error',
