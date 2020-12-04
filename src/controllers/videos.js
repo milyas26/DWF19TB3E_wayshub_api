@@ -97,6 +97,7 @@ exports.addVideo = async (req, res) => {
       description: body.description,
       video: body.video,
       channelId: body.channelId,
+      viewcount: 0,
     })
 
     const video = await Video.findOne({
@@ -121,6 +122,91 @@ exports.addVideo = async (req, res) => {
       data: {
         video,
       },
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({
+      error: {
+        message: 'Server error',
+      },
+    })
+  }
+}
+
+// EDIT VIDEO
+exports.updateVideo = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { body } = req
+
+    const videoId = await Video.findOne({
+      where: {
+        id,
+      },
+    })
+
+    if (!videoId) {
+      return res.status(404).send({
+        status: 'Resource not found',
+        message: `Video with id ${id} not found`,
+        data: [],
+      })
+    }
+
+    await Video.update(body, {
+      where: {
+        id,
+      },
+    })
+
+    const videoAfterUpdate = await Video.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: ['updatedAt', 'channelId', 'ChannelId'],
+      },
+      include: {
+        model: Channel,
+        as: 'channel',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'password'],
+        },
+      },
+    })
+
+    res.send({
+      status: 'Success',
+      message: 'Channel successfully updated',
+      data: {
+        videoAfterUpdate,
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({
+      error: {
+        message: 'Server error',
+      },
+    })
+  }
+}
+
+// DELETE VIDEO
+exports.deleteVideo = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    await Video.destroy({
+      where: {
+        id,
+      },
+    })
+
+    res.send({
+      status: 'Success',
+      message: 'Video successfully deleted',
+      data: [],
     })
   } catch (err) {
     console.log(err)

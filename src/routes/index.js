@@ -11,7 +11,13 @@ const {
   //   restoreChannel,
 } = require('../controllers/channels')
 
-const { getVideos, getDetailVideo, addVideo } = require('../controllers/videos')
+const {
+  getVideos,
+  getDetailVideo,
+  addVideo,
+  updateVideo,
+  deleteVideo,
+} = require('../controllers/videos')
 
 // CHANNELS
 router.get('/channels', getChannels)
@@ -26,5 +32,7 @@ router.post('/login', loginChannel)
 router.get('/videos', getVideos)
 router.get('/video/:id', getDetailVideo)
 router.post('/video', addVideo)
+router.patch('/video/:id', updateVideo)
+router.delete('/video/:id', deleteVideo)
 
 module.exports = router
