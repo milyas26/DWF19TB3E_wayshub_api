@@ -19,6 +19,14 @@ const {
   deleteVideo,
 } = require('../controllers/videos')
 
+const {
+  getCommentsByVideoId,
+  getCommentDetail,
+  addComment,
+  editComment,
+  deleteComment,
+} = require('../controllers/comments')
+
 // CHANNELS
 router.get('/channels', getChannels)
 router.get('/channel/:id', getSingleChannel)
@@ -34,5 +42,12 @@ router.get('/video/:id', getDetailVideo)
 router.post('/video', addVideo)
 router.patch('/video/:id', updateVideo)
 router.delete('/video/:id', deleteVideo)
+
+// COMMENTS
+router.get('/video/:id/comments', getCommentsByVideoId)
+router.get('/video/:id/comments/:commentId', getCommentDetail)
+router.post('/video/:id/comment', addComment)
+router.patch('/video/:id/comment/:commentId', editComment)
+router.delete('/video/:id/comment/:commentId', deleteComment)
 
 module.exports = router

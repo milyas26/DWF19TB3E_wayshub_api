@@ -1,4 +1,4 @@
-const { Channel, Video } = require('../../models')
+const { Channel, Video, Comment } = require('../../models')
 
 // GET ALL VIDEOS
 exports.getVideos = async (req, res) => {
@@ -7,13 +7,15 @@ exports.getVideos = async (req, res) => {
       attributes: {
         exclude: ['updatedAt', 'channelId', 'ChannelId'],
       },
-      include: {
-        model: Channel,
-        as: 'channel',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password'],
+      include: [
+        {
+          model: Channel,
+          as: 'channel',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password'],
+          },
         },
-      },
+      ],
     })
 
     if (videos.length === 0) {
@@ -52,13 +54,29 @@ exports.getDetailVideo = async (req, res) => {
       attributes: {
         exclude: ['updatedAt', 'channelId', 'ChannelId'],
       },
-      include: {
-        model: Channel,
-        as: 'channel',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password'],
+      include: [
+        {
+          model: Channel,
+          as: 'channel',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password'],
+          },
         },
-      },
+        {
+          model: Comment,
+          as: 'comments',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'channelId',
+              'ChannelId',
+              'VideoId',
+              'videoId',
+            ],
+          },
+        },
+      ],
     })
 
     if (!video) {
@@ -107,13 +125,29 @@ exports.addVideo = async (req, res) => {
       attributes: {
         exclude: ['updatedAt', 'channelId', 'ChannelId'],
       },
-      include: {
-        model: Channel,
-        as: 'channel',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password'],
+      include: [
+        {
+          model: Channel,
+          as: 'channel',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password'],
+          },
         },
-      },
+        {
+          model: Comment,
+          as: 'comments',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'channelId',
+              'ChannelId',
+              'VideoId',
+              'videoId',
+            ],
+          },
+        },
+      ],
     })
 
     res.send({
@@ -139,20 +173,6 @@ exports.updateVideo = async (req, res) => {
     const { id } = req.params
     const { body } = req
 
-    const videoId = await Video.findOne({
-      where: {
-        id,
-      },
-    })
-
-    if (!videoId) {
-      return res.status(404).send({
-        status: 'Resource not found',
-        message: `Video with id ${id} not found`,
-        data: [],
-      })
-    }
-
     await Video.update(body, {
       where: {
         id,
@@ -166,13 +186,29 @@ exports.updateVideo = async (req, res) => {
       attributes: {
         exclude: ['updatedAt', 'channelId', 'ChannelId'],
       },
-      include: {
-        model: Channel,
-        as: 'channel',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password'],
+      include: [
+        {
+          model: Channel,
+          as: 'channel',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password'],
+          },
         },
-      },
+        {
+          model: Comment,
+          as: 'comments',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'channelId',
+              'ChannelId',
+              'VideoId',
+              'videoId',
+            ],
+          },
+        },
+      ],
     })
 
     res.send({

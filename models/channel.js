@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       Channel.hasMany(models.Video, {
         as: 'videos',
       })
+      Channel.hasMany(models.Comment, {
+        as: 'comments',
+      })
     }
   }
   Channel.init(
