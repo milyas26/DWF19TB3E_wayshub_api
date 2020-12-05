@@ -90,40 +90,6 @@ exports.getSingleChannel = async (req, res) => {
   }
 }
 
-// ADD NEW CHANNEL / REGISTER NEW CHANNEL
-exports.addChannel = async (req, res) => {
-  try {
-    const { email, password, channelName, description } = req.body
-
-    const channel = await Channel.create({
-      email,
-      password,
-      channelName,
-      description,
-      thumbnail: 'thumbnail.jpg',
-      photo: 'photo.jpg',
-    })
-
-    res.send({
-      status: 'Success',
-      message: 'Channel successfully created',
-      data: {
-        channel: {
-          email,
-          password,
-        },
-      },
-    })
-  } catch (err) {
-    console.log(err)
-    res.status(500).send({
-      error: {
-        message: 'Server error',
-      },
-    })
-  }
-}
-
 // UPDATE CHANNEL
 exports.updateChannel = async (req, res) => {
   try {
@@ -234,40 +200,3 @@ exports.deleteChannel = async (req, res) => {
 //     })
 //   }
 // }
-
-// LOGIN CHANNEL
-exports.loginChannel = async (req, res) => {
-  try {
-    const { email, password } = req.body
-    const channel = await Channel.findOne({
-      where: {
-        email,
-        password,
-      },
-    })
-
-    if (!channel) {
-      return res.send({
-        message: `Invalid email or password!`,
-      })
-    }
-
-    res.send({
-      status: 'Success',
-      message: 'Login Successfully',
-      data: {
-        channel: {
-          email: channel.email,
-          password: channel.password,
-        },
-      },
-    })
-  } catch (err) {
-    console.log(err)
-    res.status(500).send({
-      error: {
-        message: 'Server error',
-      },
-    })
-  }
-}
