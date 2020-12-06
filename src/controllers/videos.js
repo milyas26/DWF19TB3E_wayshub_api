@@ -108,7 +108,8 @@ exports.getDetailVideo = async (req, res) => {
 // CREATE / ADD VIDEO
 exports.addVideo = async (req, res) => {
   try {
-    const { title, description, channelId } = req.body
+    const { title, description } = req.body
+    const { id: channelId } = req.channelId
     const { files } = req
 
     const thumbnailName = files.thumbnail[0].filename
