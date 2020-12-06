@@ -1,4 +1,6 @@
 // Import model User
+const Joi = require('joi')
+const bcrypt = require('bcrypt')
 const { Channel, Video } = require('../../models')
 
 // GET ALL CHANNELS
@@ -94,7 +96,39 @@ exports.getSingleChannel = async (req, res) => {
 exports.updateChannel = async (req, res) => {
   try {
     const { id } = req.params
-    const { body } = req
+    const { email, password, channelName, description } = req.body
+    const { thumbnail, photo } = req.files
+
+    const thumbnailName = thumbnail[0].filename
+    const photoName = photo[0].filename
+
+    const schema = Joi.object({
+      email: Joi.string().email().min(8),
+      password: Joi.string().min(8),
+      channelName: Joi.string().min(5),
+      description: Joi.string().min(20),
+    })
+
+    const { error } = schema.validate(
+      {
+        email,
+        password,
+        channelName,
+        description,
+      },
+      { abortEarly: false },
+    )
+
+    if (error) {
+      return res.status(400).send({
+        status: 'Validation Error',
+        error: {
+          message: error.details.map((error) => error.message),
+        },
+      })
+    }
+
+    const passwordHashed = await bcrypt.hash(password, 12)
 
     const channelId = await Channel.findOne({
       where: {
@@ -110,13 +144,23 @@ exports.updateChannel = async (req, res) => {
       })
     }
 
-    await Channel.update(body, {
-      where: {
-        id,
+    await Channel.update(
+      {
+        email,
+        password: passwordHashed,
+        channelName,
+        description,
+        thumbnail: thumbnailName,
+        photo: photoName,
       },
-    })
+      {
+        where: {
+          id,
+        },
+      },
+    )
 
-    const channelAfterUpdate = await Channel.findOne({
+    const channel = await Channel.findOne({
       where: {
         id,
       },
@@ -129,7 +173,13 @@ exports.updateChannel = async (req, res) => {
       status: 'Success',
       message: 'Channel successfully updated',
       data: {
-        channelAfterUpdate,
+        channel: {
+          email: channel.email,
+          channelName: channel.channelName,
+          description: channel.description,
+          thumbnail: channel.thumbnail,
+          photo: channel.photo,
+        },
       },
     })
   } catch (err) {

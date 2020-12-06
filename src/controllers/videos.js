@@ -1,3 +1,4 @@
+const Joi = require('joi')
 const { Channel, Video, Comment } = require('../../models')
 
 // GET ALL VIDEOS
@@ -107,14 +108,40 @@ exports.getDetailVideo = async (req, res) => {
 // CREATE / ADD VIDEO
 exports.addVideo = async (req, res) => {
   try {
-    const { body } = req
+    const { title, description, channelId } = req.body
+    const { files } = req
+
+    const thumbnailName = files.thumbnail[0].filename
+    const videoName = files.video[0].filename
+
+    const schema = Joi.object({
+      title: Joi.string().min(8),
+      description: Joi.string().min(20),
+    })
+
+    const { error } = schema.validate(
+      {
+        title,
+        description,
+      },
+      { abortEarly: false },
+    )
+
+    if (error) {
+      return res.status(400).send({
+        status: 'Validation Error',
+        error: {
+          message: error.details.map((error) => error.message),
+        },
+      })
+    }
 
     const videoAfterCreate = await Video.create({
-      title: body.title,
-      thumbnail: body.thumbnail,
-      description: body.description,
-      video: body.video,
-      channelId: body.channelId,
+      title: title,
+      thumbnail: thumbnailName,
+      description: description,
+      video: videoName,
+      channelId: channelId,
       viewcount: 0,
     })
 

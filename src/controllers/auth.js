@@ -45,7 +45,7 @@ exports.addChannel = async (req, res) => {
     if (checkEmail) {
       return res.status(400).send({
         status: 'Failed',
-        message: `This email already existed!`,
+        message: `This email already exist!`,
       })
     }
 
@@ -58,7 +58,7 @@ exports.addChannel = async (req, res) => {
       photo: 'photo.jpg',
     })
 
-    const PrivateKey = 'TR4NSF0RMER'
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const token = jwt.sign(
       {
         id: newChannel.id,
@@ -139,7 +139,7 @@ exports.loginChannel = async (req, res) => {
       })
     }
 
-    const PrivateKey = 'TR4NSF0RMER'
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const token = jwt.sign(
       {
         id: channel.id,
