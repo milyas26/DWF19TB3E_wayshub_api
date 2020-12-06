@@ -73,8 +73,8 @@ router.patch('/video/:id/comment/:commentId', authentication, editComment)
 router.delete('/video/:id/comment/:commentId', authentication, deleteComment)
 
 // SUBSCRIPTION
-router.get('/subscribe', getSubscription)
-router.post('/subscribe', addSubscription)
-router.delete('/subscribe/:id', unSubscribe)
+router.get('/subscribe', authentication, getSubscription)
+router.post('/subscribe', authentication, addSubscription)
+router.delete('/subscribe/:channelId', authentication, unSubscribe)
 
 module.exports = router

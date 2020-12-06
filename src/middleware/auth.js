@@ -20,7 +20,6 @@ exports.auth = (req, res, next) => {
     const verified = jwt.verify(token, PrivateKey)
 
     req.channelId = verified
-
     next()
   } catch (err) {
     return res.status(401).send({
