@@ -4,15 +4,44 @@ const { Channel, Video, Subscribe } = require('../../models')
 exports.addSubscription = async (req, res) => {
   try {
     const { channelId } = req.body
+    const { id } = req.channelId
 
-    const subscribe = await Subscribe.create({
-      channelId,
-      subscriberId: 4,
+    if (id === channelId) {
+      return res.status(400).send({
+        status: 'error',
+        error: {
+          message: 'Cannot subscribe yourself',
+        },
+      })
+    }
+
+    const isSubscribed = await Subscribe.findOne({
+      where: {
+        channelId: channelId,
+        subscriberId: id,
+      },
     })
 
-    const subscribtion = await Channel.findOne({
+    if (isSubscribed) {
+      return res.status(400).send({
+        status: 'error',
+        error: {
+          message: 'Already subscribe to this chanel',
+        },
+      })
+    }
+
+    await Subscribe.create({
+      channelId: channelId,
+      subscriberId: id,
+    })
+
+    const channel = await Channel.findOne({
       where: {
-        id: subscribe.subscriberId,
+        id: channelId,
+      },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'password'],
       },
     })
 
@@ -20,14 +49,7 @@ exports.addSubscription = async (req, res) => {
       status: 'Success',
       data: {
         subscribe: {
-          channel: {
-            id: subscribtion.id,
-            email: subscribtion.email,
-            channelName: subscribtion.channelName,
-            description: subscribtion.description,
-            thumbnail: subscribtion.thumbnail,
-            photo: subscribtion.photo,
-          },
+          channel,
         },
       },
     })
@@ -44,11 +66,13 @@ exports.addSubscription = async (req, res) => {
 // DELETE SUBSCRIBE
 exports.unSubscribe = async (req, res) => {
   try {
-    const { id } = req.params
+    const { channelId } = req.params
+    const { id } = req.channelId
 
     const subscribe = await Subscribe.destroy({
       where: {
-        id,
+        channelId,
+        subscriberId: id,
       },
     })
 
@@ -61,7 +85,7 @@ exports.unSubscribe = async (req, res) => {
     res.send({
       status: 'Success',
       data: {
-        id,
+        id: channelId,
       },
     })
   } catch (err) {
@@ -77,39 +101,57 @@ exports.unSubscribe = async (req, res) => {
 // GET SUBSCRIBER
 exports.getSubscription = async (req, res) => {
   try {
-    const subscribe = await Channel.findAll({
-      include: [
-        {
-          model: Channel,
-          as: 'subscribtion',
+    const { id } = req.channelId
+
+    const subscribtion = await Channel.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: [
+          'createdAt',
+          'updatedAt',
+          'password',
+          'chanelName',
+          'thumbnail',
+          'photo',
+          'id',
+          'email',
+          'description',
+        ],
+      },
+      include: {
+        model: Channel,
+        as: 'subscribtion',
+        through: {
+          attributes: [],
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'password'],
+        },
+        include: {
+          model: Video,
+          as: 'videos',
           attributes: {
-            exclude: [
-              'channelId',
-              'updatedAt',
-              'ChannelId',
-              'createdAt',
-              'password',
-            ],
-          },
-          include: {
-            model: Video,
-            as: 'videos',
-            attributes: {
-              exclude: ['channelId', 'updatedAt', 'ChannelId'],
-            },
+            exclude: ['channelId', 'updatedAt', 'ChannelId'],
           },
         },
-      ],
+      },
     })
 
-    const subscribing = subscribe.map(
-      (subscribing) => subscribing.subscribtion[0],
-    )
+    if (subscribtion.subscribtion.length === 0) {
+      return res.status(400).send({
+        status: 'error',
+        error: {
+          message: "You didn't subscribe anyone",
+        },
+      })
+    }
 
     res.send({
       status: 'Success',
       data: {
-        subscribing,
+        subscribtion: subscribtion.subscribtion,
       },
     })
   } catch (err) {
