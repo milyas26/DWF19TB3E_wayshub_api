@@ -3,19 +3,15 @@ const upload = multer({ dest: 'uploads/' })
 
 // UPLOAD PROFILE
 exports.uploadChannelFiles = (thumbnail, photo) => {
-  //initialisasi multer diskstorage
-  //menentukan destionation file diupload
-  //menentukan nama file (rename agar tidak ada nama file ganda)
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/images') //lokasih penyimpan file
+      cb(null, 'uploads/images')
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' + file.originalname) //rename nama file by date now + nama original
+      cb(null, Date.now() + '-' + file.originalname)
     },
   })
 
-  //function untuk filter file berdasarkan type
   const fileFilter = function (req, file, cb) {
     if (file.fieldname === thumbnail) {
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
@@ -37,9 +33,8 @@ exports.uploadChannelFiles = (thumbnail, photo) => {
     cb(null, true)
   }
 
-  const maxSize = 100 * 1000 * 1000 //Maximum file size i MB
+  const maxSize = 5 * 1000 * 1000
 
-  //eksekusi upload multer dan tentukan disk storage, validation dan maxfile size
   const upload = multer({
     storage,
     fileFilter,
@@ -55,22 +50,18 @@ exports.uploadChannelFiles = (thumbnail, photo) => {
       name: photo,
       maxCount: 1,
     },
-  ]) //fields digunakan karena file yang diupload lebih dari 1 fields
+  ])
 
-  //middleware handler
   return (req, res, next) => {
     upload(req, res, function (err) {
-      //munculkan error jika validasi gagal
       if (req.fileValidationError)
         return res.status(400).send(req.fileValidationError)
 
-      //munculkan error jika file tidak disediakan
       if (!req.files && !err)
         return res.status(400).send({
           message: 'Please select files to upload',
         })
 
-      //munculkan error jika melebihi max size
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
           return res.status(400).send({
@@ -80,8 +71,6 @@ exports.uploadChannelFiles = (thumbnail, photo) => {
         return res.status(400).send(err)
       }
 
-      //jika oke dan aman lanjut ke controller
-      //akses nnti pake req.files
       return next()
     })
   }
@@ -89,23 +78,19 @@ exports.uploadChannelFiles = (thumbnail, photo) => {
 
 // UPLOAD VIDEO
 exports.uploadVideoFiles = (thumbnail, video) => {
-  //initialisasi multer diskstorage
-  //menentukan destionation file diupload
-  //menentukan nama file (rename agar tidak ada nama file ganda)
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       if (file.fieldname === thumbnail) {
-        cb(null, 'uploads/images') //lokasih penyimpan file
+        cb(null, 'uploads/images')
       } else if (file.fieldname === video) {
-        cb(null, 'uploads/videos') //lokasih penyimpan file
+        cb(null, 'uploads/videos')
       }
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' + file.originalname) //rename nama file by date now + nama original
+      cb(null, Date.now() + '-' + file.originalname)
     },
   })
 
-  //function untuk filter file berdasarkan type
   const fileFilter = function (req, file, cb) {
     if (file.fieldname === thumbnail) {
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
@@ -126,10 +111,8 @@ exports.uploadVideoFiles = (thumbnail, video) => {
     }
     cb(null, true)
   }
-
   const maxSize = 100 * 1000 * 1000
 
-  //eksekusi upload multer dan tentukan disk storage, validation dan maxfile size
   const upload = multer({
     storage,
     fileFilter,
@@ -145,22 +128,18 @@ exports.uploadVideoFiles = (thumbnail, video) => {
       name: video,
       maxCount: 1,
     },
-  ]) //fields digunakan karena file yang diupload lebih dari 1 fields
+  ])
 
-  //middleware handler
   return (req, res, next) => {
     upload(req, res, function (err) {
-      //munculkan error jika validasi gagal
       if (req.fileValidationError)
         return res.status(400).send(req.fileValidationError)
 
-      //munculkan error jika file tidak disediakan
       if (!req.files && !err)
         return res.status(400).send({
           message: 'Please select files to upload',
         })
 
-      //munculkan error jika melebihi max size
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
           return res.status(400).send({
@@ -169,9 +148,6 @@ exports.uploadVideoFiles = (thumbnail, video) => {
         }
         return res.status(400).send(err)
       }
-
-      //jika oke dan aman lanjut ke controller
-      //akses nnti pake req.files
       return next()
     })
   }

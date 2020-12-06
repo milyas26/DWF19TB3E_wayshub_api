@@ -8,7 +8,7 @@ module.exports = {
         autoIncrement: true,
         type: Sequelize.INTEGER,
       },
-      subscribeId: {
+      channelId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {

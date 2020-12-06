@@ -8,7 +8,7 @@ exports.getChannels = async (req, res) => {
   try {
     const channels = await Channel.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'password'],
       },
       include: [
         {
@@ -22,7 +22,13 @@ exports.getChannels = async (req, res) => {
           model: Channel,
           as: 'subscriber',
           attributes: {
-            exclude: ['channelId', 'updatedAt', 'ChannelId', 'createdAt'],
+            exclude: [
+              'channelId',
+              'updatedAt',
+              'ChannelId',
+              'createdAt',
+              'password',
+            ],
           },
         },
       ],

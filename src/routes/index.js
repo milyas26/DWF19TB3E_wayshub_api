@@ -31,6 +31,12 @@ const {
   deleteComment,
 } = require('../controllers/comments')
 
+const {
+  getSubscription,
+  addSubscription,
+  unSubscribe,
+} = require('../controllers/subscribes')
+
 // CHANNELS
 router.get('/channels', getChannels)
 router.get('/channel/:id', getSingleChannel)
@@ -65,5 +71,10 @@ router.get('/video/:id/comments/:commentId', getCommentDetail)
 router.post('/video/:id/comment', authentication, addComment)
 router.patch('/video/:id/comment/:commentId', authentication, editComment)
 router.delete('/video/:id/comment/:commentId', authentication, deleteComment)
+
+// SUBSCRIPTION
+router.get('/subscribe', getSubscription)
+router.post('/subscribe', addSubscription)
+router.delete('/subscribe/:id', unSubscribe)
 
 module.exports = router

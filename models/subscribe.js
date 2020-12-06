@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Subscribe.init(
     {
-      subscribeId: DataTypes.INTEGER,
+      channelId: DataTypes.INTEGER,
       subscriberId: DataTypes.INTEGER,
     },
     {
