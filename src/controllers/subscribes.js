@@ -15,6 +15,21 @@ exports.addSubscription = async (req, res) => {
       })
     }
 
+    const checkChannel = await Channel.findOne({
+      where: {
+        id: channelId,
+      },
+    })
+
+    if (!checkChannel) {
+      return res.status(400).send({
+        status: 'Error',
+        error: {
+          message: 'Channel not found!',
+        },
+      })
+    }
+
     const isSubscribed = await Subscribe.findOne({
       where: {
         channelId: channelId,
