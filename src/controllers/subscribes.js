@@ -148,10 +148,19 @@ exports.getSubscription = async (req, res) => {
       })
     }
 
+    const videos = subscribtion.subscribtion.map((video) => video.videos)
+
+    let video = []
+    for (let i = 0; i < videos.length; i++) {
+      for (let k = 0; k < videos[i].length; k++) {
+        video.push(videos[i][k])
+      }
+    }
+
     res.send({
       status: 'Success',
       data: {
-        subscribtion: subscribtion.subscribtion.map((video) => video.videos),
+        subscribtion: video,
       },
     })
   } catch (err) {
