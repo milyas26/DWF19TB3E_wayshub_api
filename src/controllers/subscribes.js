@@ -151,7 +151,7 @@ exports.getSubscription = async (req, res) => {
     res.send({
       status: 'Success',
       data: {
-        subscribtion: subscribtion.subscribtion,
+        subscribtion: subscribtion.subscribtion.map((video) => video.videos),
       },
     })
   } catch (err) {
