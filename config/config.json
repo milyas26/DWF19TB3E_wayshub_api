@@ -14,8 +14,8 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable" : "DATABASE_URL",
-    "dialect" : "postgress",
-    "protocol" : "postgress"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgress",
+    "protocol": "postgress"
   }
 }
