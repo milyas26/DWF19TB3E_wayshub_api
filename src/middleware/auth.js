@@ -16,7 +16,7 @@ exports.auth = (req, res, next) => {
   }
 
   try {
-    const PrivateKey = TR4NSF0RMER
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const verified = jwt.verify(token, PrivateKey)
 
     req.channelId = verified

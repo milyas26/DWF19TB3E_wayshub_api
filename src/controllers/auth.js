@@ -57,7 +57,7 @@ exports.addChannel = async (req, res) => {
       photo: 'uploads\\images\\default-photo.png',
     })
 
-    const PrivateKey = TR4NSF0RMER
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const token = jwt.sign(
       {
         id: newChannel.id,
@@ -144,7 +144,7 @@ exports.loginChannel = async (req, res) => {
       })
     }
 
-    const PrivateKey = TR4NSF0RMER
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const token = jwt.sign(
       {
         id: channel.id,
@@ -250,7 +250,7 @@ exports.resetPassword = async (req, res) => {
       },
     })
 
-    const PrivateKey = TR4NSF0RMER
+    const PrivateKey = process.env.JWT_PRIVATE_KEY
     const token = jwt.sign(
       {
         id: channel.id,
