@@ -16,7 +16,6 @@ module.exports = {
           'https://res.cloudinary.com/milyas/image/upload/v1608656140/uploads/images/1608656136307%20-%201%20photo.jpeg.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
-        deletedAt: null,
       },
     ])
   },
