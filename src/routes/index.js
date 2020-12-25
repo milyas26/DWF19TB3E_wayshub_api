@@ -84,7 +84,7 @@ router.post(
   uploadVideoFiles('thumbnail', 'video'),
   addVideo,
 )
-router.patch(
+router.put(
   '/video/:id',
   authentication,
   uploadVideoFiles('thumbnail', 'video'),
