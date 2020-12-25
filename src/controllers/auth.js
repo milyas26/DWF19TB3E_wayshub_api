@@ -53,7 +53,8 @@ exports.addChannel = async (req, res) => {
       password: passwordHashed,
       channelName,
       description,
-      thumbnail: 'uploads\\images\\default-thumbnail.png',
+      thumbnail:
+        'https://res.cloudinary.com/milyas/image/upload/v1608836329/uploads/images/1608836327786%20-%202%20thumbnail.jpg.jpg',
       photo: 'uploads\\images\\default-photo.png',
     })
 
