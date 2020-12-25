@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Channels', [
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert('Channels', [
       {
         email: 'channelsatu@gmail.com',
         password:
@@ -61,7 +61,7 @@ module.exports = {
     ])
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Users', null, {})
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('Users', null, {})
   },
 }
