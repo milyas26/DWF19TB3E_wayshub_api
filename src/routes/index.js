@@ -50,6 +50,13 @@ const {
   getIdSubscriber,
 } = require('../controllers/subscribes')
 
+const {
+  getAllWatchLater,
+  addWatchLater,
+  deleteWatchLater,
+  getIsInList,
+} = require('../controllers/watchLater')
+
 // CHANNELS
 router.get('/channels', getChannels)
 router.get('/channel/:id', getSingleChannel)
@@ -105,5 +112,11 @@ router.post('/subscribe/:channelId', authentication, addSubscription)
 router.delete('/subscribe/:channelId', authentication, unSubscribe)
 router.get('/subscribtion', authentication, subscriptionChannel)
 router.get('/subscriber/:id', authentication, getIdSubscriber)
+
+// WATCH LATER
+router.get('/watch-laters', authentication, getAllWatchLater)
+router.post('/add-watchlater/:id', authentication, addWatchLater)
+router.delete('/delete-watchlater/:id', authentication, deleteWatchLater)
+router.get('/check-list/:id', authentication, getIsInList)
 
 module.exports = router

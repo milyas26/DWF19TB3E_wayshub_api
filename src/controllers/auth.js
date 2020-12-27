@@ -55,7 +55,7 @@ exports.addChannel = async (req, res) => {
       description,
       thumbnail:
         'https://res.cloudinary.com/milyas/image/upload/v1608836329/uploads/images/1608836327786%20-%202%20thumbnail.jpg.jpg',
-      photo: 'uploads\\images\\default-photo.png',
+      photo: 'https://res.cloudinary.com/milyas/image/upload/v1608880029/uploads/images/user-default_b2kvtj.png',
     })
 
     const PrivateKey = process.env.JWT_PRIVATE_KEY
