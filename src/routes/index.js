@@ -55,7 +55,7 @@ const {
   addWatchLater,
   deleteWatchLater,
   getIsInList,
-} = require('../controllers/watchLater')
+} = require('../controllers/watchlater')
 
 // CHANNELS
 router.get('/channels', getChannels)
