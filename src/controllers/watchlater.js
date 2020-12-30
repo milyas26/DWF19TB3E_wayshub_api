@@ -1,4 +1,4 @@
-const { Video, WatchLater } = require('../../models')
+const { Video, WatchLater, Channel, Comment } = require('../../models')
 const { Op } = require('sequelize')
 
 // GET ALL WATCH LATER
@@ -30,6 +30,39 @@ exports.getAllWatchLater = async (req, res) => {
           [Op.in]: videoId,
         },
       },
+      attributes: {
+        exclude: ['updatedAt', 'channelId', 'ChannelId'],
+      },
+      include: [
+        {
+          model: Channel,
+          as: 'channel',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'password',
+              'thumbnail',
+              'description',
+              'email',
+            ],
+          },
+        },
+        {
+          model: Comment,
+          as: 'comments',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'channelId',
+              'ChannelId',
+              'VideoId',
+              'videoId',
+            ],
+          },
+        },
+      ],
     })
 
     res.send({
