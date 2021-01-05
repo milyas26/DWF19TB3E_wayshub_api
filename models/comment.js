@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Comment.belongsTo(models.Video, {
         as: "video",
-        foreignKey: "videoId",
       });
       Comment.belongsTo(models.Channel, {
         as: "channel",

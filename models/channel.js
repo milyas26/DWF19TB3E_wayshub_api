@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Channel.hasMany(models.Video, {
         as: "videos",
-        foreignKey: "videoId",
       });
       Channel.hasMany(models.Comment, {
         as: "comments",
