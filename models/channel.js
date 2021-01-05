@@ -1,5 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Channel extends Model {
     /**
@@ -10,25 +10,26 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Channel.hasMany(models.Video, {
-        as: 'videos',
-      })
+        as: "videos",
+        foreignKey: "videoId",
+      });
       Channel.hasMany(models.Comment, {
-        as: 'comments',
-      })
+        as: "comments",
+      });
 
       Channel.belongsToMany(models.Channel, {
-        foreignKey: 'channelId',
-        otherKey: 'subscriberId',
-        as: 'subscriber',
-        through: 'subscribes',
-      })
+        foreignKey: "channelId",
+        otherKey: "subscriberId",
+        as: "subscriber",
+        through: "subscribes",
+      });
 
       Channel.belongsToMany(models.Channel, {
-        foreignKey: 'subscriberId',
-        otherKey: 'channelId',
-        as: 'subscribtion',
-        through: 'subscribes',
-      })
+        foreignKey: "subscriberId",
+        otherKey: "channelId",
+        as: "subscribtion",
+        through: "subscribes",
+      });
     }
   }
   Channel.init(
@@ -43,8 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       // paranoid: true,
-      modelName: 'Channel',
-    },
-  )
-  return Channel
-}
+      modelName: "Channel",
+    }
+  );
+  return Channel;
+};
